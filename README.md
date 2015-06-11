@@ -5,6 +5,8 @@
 [![Build Status](https://travis-ci.org/SimonDanisch/FixedSizeArrays.jl.svg?branch=master)](https://travis-ci.org/SimonDanisch/FixedSizeArrays.jl)
 
 #### This package is 0.4 only
+###  This branch: attempt to use simd to gain performance (Linux, Intel 64bit)
+
 #### Packages that use FixedSizeArrays:
 [GeometryTypes.jl](https://github.com/JuliaGeometry/GeometryTypes.jl)
 [ColorTypes.jl](https://github.com/SimonDanisch/ColorTypes.jl)

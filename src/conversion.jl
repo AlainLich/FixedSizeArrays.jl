@@ -2,7 +2,7 @@
 @generated function convert{SZ, T, ND}(a::Type{FixedArray{T, ND, SZ}}, v::Array{T, ND})
     returntype = gen_fixedsizevector_type(SZ, false)
     quote
-        length(v) != length(a) && throw(DimensionMismatch("Lenght of Array: $(length(v)) is not equal to length of FixedSizeArray: $(length(FSA))"))
+        length(v) != length(a) && throw(DimensionMismatch("Lenght of Array: $(length(v)) is not equal to length of FixedSizeArray: $(length(a))"))
         unsafe_load(Ptr{$returntype{T}}(pointer(v)))
     end
 end

@@ -1,5 +1,9 @@
+module TestCore
+
 using FixedSizeArrays
 
 r = rand(4,4)
-b = nvec(r)
+b = nvec((4,4), r...)
 println(b)
+
+end # module TestCore

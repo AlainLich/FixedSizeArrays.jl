@@ -38,6 +38,7 @@ flatten_dimension(SIZE) = SIZE
 flatten_dimension(SIZE::Tuple{Int, Int}) = any(x->x==1, SIZE) ? prod(SIZE) : SIZE
 
 gen_fixedsizevector_type(SIZE, mutable::Bool) = gen_fixedsizevector_type((SIZE.parameters...), mutable)
+gen_fixedsizevector_type(SIZE::Tuple, mutable::Bool) = gen_fixedsizevector_type(SIZE, mutable)
 function gen_fixedsizevector_type(SIZE::@compat(Tuple{Vararg{Integer}}), mutable::Bool)
     typename = vecname(SIZE, mutable)
     # if already exists, there's nothing to be done here
@@ -66,7 +67,7 @@ call(f::ConstFunctor, i) = f.args
 
 nvec{T <: AbstractArray}(x::T)        = FixedArray(x)
 nvec{T}(x::T...)                      = FixedArray{T, 1, (length(x),)}(x)
-nvec{T}(SIZE::@compat(Tuple{Vararg{Integer}}), x::T...) = FixedArray{T, length(SIZE), SIZE}(x)
+nvec{T}(SIZE::@compat(Tuple{Vararg{Integer}}), x::T...) = FixedArray{T, length(SIZE), Tuple{SIZE...}}(x...)
 
 
 macro gen_fixed_size_vector(basename, fields, N, mutable)
