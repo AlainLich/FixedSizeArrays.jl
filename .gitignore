@@ -1,0 +1,6 @@
+*.asm
+*.llvm
+# SVG do not showup on Github
+*.svg
+*~
+

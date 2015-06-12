@@ -66,8 +66,8 @@ call(f::ConstFunctor, i) = f.args
 
 nvec{T <: AbstractArray}(x::T)        = FixedArray(x)
 nvec{T}(x::T...)                      = FixedArray{T, 1, (length(x),)}(x)
-nvec{T}(SIZE::@compat(Tuple{Vararg{Integer}}), x::T...) = FixedArray{T, length(SIZE), SIZE}(x)
-
+# nvec{T}(SIZE::@compat(Tuple{Vararg{Integer}}), x::T...) = FixedArray{T, length(SIZE), SIZE}(x)
+nvec{T}(SIZE::@compat(Tuple{Vararg{Integer}}), x::T...) = FixedArray{T, length(SIZE), Tuple{SIZE...}}(x...)
 
 macro gen_fixed_size_vector(basename, fields, N, mutable)
     # bring the sugar back

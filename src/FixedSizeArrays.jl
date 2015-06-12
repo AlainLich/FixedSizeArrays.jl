@@ -25,4 +25,7 @@ export row
 export column
 export MatMulFunctor
 
+include("simd/MacrosCodeTest.jl")
+export MacrosCodeTest
+
 end

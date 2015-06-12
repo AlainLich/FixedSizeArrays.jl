@@ -10,6 +10,11 @@
 [GeometryTypes.jl](https://github.com/JuliaGeometry/GeometryTypes.jl)
 [ColorTypes.jl](https://github.com/SimonDanisch/ColorTypes.jl)
 
+####  This branch investigate performance (exploration by @AlainLich)
+ 1. add and calibrate benchmarking tool
+ 2. explore potential of @simd directive
+    Further details  at <A HREF="test/simd/READMEtoo.md">here</A>
+
 #### Usage and advantages:
 FixedSizeArrays is giving any composite type array like behavior by inheriting from FixedSizeArrays.
 So you can do something like this:
