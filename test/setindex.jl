@@ -1,9 +1,13 @@
-using GeometryTypes
+module Setindex
+
+import GeometryTypes: Vector3 
+using FixedSizeArrays
+
 
 const v = Vector3{Int}(0,0,0)
 const v2 = [0, 0, 0]
 
- function f(v, n)
+function f(v, n)
     x = 0
     for i = 1:n
         for row=1:3
@@ -22,3 +26,5 @@ const N = 1_000_0000
 @time f(v2, N)
 @time f(v2, N)
 @time f(v2, N)
+
+end # module Setindex

@@ -1,3 +1,4 @@
+module OpsTest
 using FixedSizeArrays
 
 
@@ -10,7 +11,9 @@ const unaryOps = (-, ~, conj, abs,
                   sech, csch, coth, asech, acsch, acoth,
                   sinc, cosc, cosd, cotd, cscd, secd,
                   sind, tand, acosd, acotd, acscd, asecd,
-                  asind, atand, radians2degrees, degrees2radians,
+                  asind, atand,
+                  # radians2degrees, degrees2radians,
+                  # apparently removed from Base.Math
                   log, log2, log10, log1p, exponent, exp,
                   exp2, expm1, cbrt, sqrt, square, erf, 
                   erfc, erfcx, erfi, dawson, ceil, floor,
@@ -28,7 +31,7 @@ const binaryOps = (.+, .-,.*, ./, .\, .^,*,/,
                    atan2, besselj, bessely, hankelh1, hankelh2, 
                    besseli, besselk, beta, lbeta)
 
-const reductions = (sum, prod, minimum,(maximum)
+const reductions = (sum, prod, minimum, maximum)
 testresult = Dict{Function, Any}()
 
 function Base.filter(fun, x...)
@@ -42,6 +45,8 @@ function Base.filter(fun, x...)
 end
 
 @show filter(!=, [2,3,4,5], [2,1,4,7])
+
+typealias  AbstractFixedSizeArray FixedArray
 
 Base.call{FS <: AbstractFixedSizeArray, T, N}(::Type{FS}, a::Array{T, N}) = AbstractFixedSizeArray{T, N, size(a)}(a...) 
 Base.call{FS <: AbstractFixedSizeArray, T, N}(::Type{FS}, a::Array{T, N}) = AbstractFixedSizeArray{T, N, size(a)}(a...) 
@@ -66,3 +71,6 @@ function testunaray()
       end
             
 end
+
+end # module OpsTest
+                    

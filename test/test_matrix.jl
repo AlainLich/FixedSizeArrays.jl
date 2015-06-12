@@ -1,3 +1,4 @@
+module Testmatrix
 using FixedSizeArrays
 
 type A{T} <: FixedVector{T, 3}
@@ -69,3 +70,5 @@ const matmul = MatMulFunctor{Z, Z}
 #elapsed time: 6.037e-6 seconds (224 bytes allocated)
 #elapsed time: 7.848e-6 seconds (224 bytes allocated)
 #elapsed time: 7.848e-6 seconds (224 bytes allocated)
+
+end # module Testmatrix

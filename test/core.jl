@@ -1,3 +1,5 @@
+module CoreTest
+
 immutable FM4x4{T}
 	x::NTuple{16, T}
 end
@@ -63,3 +65,4 @@ const N = 10^7
 @time f(v3, N)
 @time f(v3, N)
 
+end # module CoreTest
