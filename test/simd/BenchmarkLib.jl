@@ -164,7 +164,9 @@ function calibFn()
      1.0 * 1.0
 end
 
-function calibrate(fn::Function=calibFn; repRange::Union{UnitRange{Int},Void}=10^4:10^7)
+#  Note: we should find a way to eliminate constants in repRange
+#
+function calibrate(fn::Function=calibFn; repRange::Union{UnitRange{Int},Void}=10^6:5*10^7)
     local repeatVect = calibRepeat(repRange)
     local nbSamples  = length(repeatVect)
 
@@ -308,15 +310,6 @@ function doPlot(ana::Analysis,col::Int,fname::String;
                Guide.YLabel(ana.colLabels[col]),
                Guide.Title(title)]
         plt = plot([layer1,layer2], legends...)
-
-        #==
-        # Fairly complicated technique to add Guide elements to the plot
-        # no syntactic sugar (see Gadfly/src/guide.jl)
-        map (x-> push!(plt.guides,x),
-              [Guide.XLabel(ana.colLabels[1]), 
-               Guide.YLabel(ana.colLabels[col]),
-               Guide.Title(title)])
-        ==#
     else
         plt = plot(x=ana.data[:,1] ,  y = ana.data[:,col],
                Guide.XLabel(ana.colLabels[1]), 
@@ -338,13 +331,10 @@ function doPlotNorm(ana::Analysis,col::Int,fname::String;
         xline,yline = lineFit(ana,col,Model(modelfit))
 
         plt=plot(  layer( x = ana.data[:,1] ,  y = ana.data[:,col] ./ ana.data[:,1],Geom.point),
-                   layer( x = xline, y = yline, Geom.line))
-        #layer1 = layer( x = ana.data[:,1] ,  y = ana.data[:,col],Geom.point)
-        #layer2  = layer( x = xline, y = yline, Geom.line)
-        #plt = plot(layer1,layer2)              
-              # Guide.XLabel(ana.colLabels[1]), 
-              # Guide.YLabel(ana.colLabels[col]),
-              # Guide.title(title), attribs...)
+                   layer( x = xline, y = yline, Geom.line),
+                   Guide.XLabel(ana.colLabels[1]), 
+                   Guide.YLabel(ana.colLabels[col]),
+                   Guide.title(title), attribs...)
     else
         plt = plot(x=ana.data[:,1] ,  y = ana.data[:,col] ./ ana.data[:,1],
                Guide.XLabel(ana.colLabels[1]), 

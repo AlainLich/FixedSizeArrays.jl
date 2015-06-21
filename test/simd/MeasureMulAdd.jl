@@ -8,11 +8,11 @@ using BenchmarkLib
 
 using Base.Test
 
-FLPType     = Float64         # Float32 or Float64  (what happens with int?)
-doCodeDumps = false            # output code llvm and asm
-showfit = true                # in graphics show fitted line
-outputDir   = joinpath(Pkg.dir(),"FixedSizeArrays","test","output")
-focusCalib  = true            # when false try all sorts of repetition counts
+const FLPType     = Float64          # Float32 or Float64  (what happens with int?)
+const doCodeDumps = false            # output code llvm and asm
+const showfit     = true             # in graphics show fitted line
+const outputDir   = joinpath(Pkg.dir(),"FixedSizeArrays","test","output")
+const focusCalib  = true             # when false try all sorts of repetition counts
                               # when true, focus on usefull ranges (based on declarations)
 #= Test with matrices
 =#
@@ -229,8 +229,8 @@ showMat(lF1)
 
 ## Use as criterion sufficient elapsed time (seems weird in view of possible
 ## task preemption, kept here because elapse time resolution supposed to be ns)
-println("\nSufficient elapsed (?)")
-linesF2 = filter( i-> anCalibr.data[i,7] > 1.0e4,
+println("\nSufficient total elapsed (?)")
+linesF2 = filter( i-> anCalibr.data[i,7] > 1.0e6,
                  1:size(anCalibr.data,1))
 println(linesF2)
 println(fmtMat( anCalibr, linesF2))
@@ -376,7 +376,7 @@ for total in [false,true]
    tot  = total ? "(Total)" : ""
    offt = total ? 5 : 0
    plotFn = total ? doPlotNorm : doPlot 
-   doPlot2Cols(anCalibr,2+offt,3,outputDir * "/CalibrEvsC.svg")
+   doPlot2Cols(anCalibr,2+offt,3,outputDir * "/CalibrEvsC$(fit)$(fmt).svg")
    plotFn(anCalibr,2+offt,outputDir * "/CalibrETime$(fit)$(fmt).svg",
           title = "Calibration kernel $(tot) Elapsed time FLP$(prec)",
           showfit=showfit)
@@ -408,46 +408,51 @@ for total in [false,true]
 
    plotFn(ab1,2+offt,outputDir * "/FSAMultETimeFlp$(prec)$(fit)$(fmt).svg",
           title = "FSA Multiply 4x4 Elapsed  $(tot) time FLP$(prec)",
-          showfit=showfit)
+          showfit=showfit, attribs=())
    plotFn(ab2,2+offt,outputDir * "/ArrayMultETimeFlp$(prec)$(fit)$(fmt).svg",
           title = "Array Multiply 4x4 Elapsed  $(tot) time FLP$(prec)",
-          showfit=showfit)
+          showfit=showfit, attribs=())
    plotFn(ab3,2+offt,outputDir * "/FSAAddETimeFlp$(prec)$(fit)$(fmt).svg",
           title = "FSA Add 4x4 Elapsed  $(tot) time FLP$(prec)",
-          showfit=showfit)
+          showfit=showfit, attribs=())
    plotFn(ab4,2+offt,outputDir * "/ArraySimdMultETimeFlp$(prec)$(fit)$(fmt).svg",
           title = "Array Mult (SIMD)  4x4 Elapsed  $(tot) time FLP$(prec)",
-          showfit=showfit)
+          showfit=showfit, attribs=())
    plotFn(ab5,2+offt,outputDir * "/ArraySimdAddETimeFlp$(prec)$(fit)$(fmt).svg",
           title = "Array Add (SIMD) 4x4 Elapsed  $(tot) time FLP$(prec)",
-          showfit=showfit)
+          showfit=showfit, attribs=())
 end
 
 
 # Plots corresponding to calibration data
 doPlot2Cols(anCalibr.data[linesF1,:],2,3,
             anCalibr.colLabels[2],anCalibr.colLabels[3],
-            outputDir * "/CalibrEQCritRR.svg",
+            outputDir * "/CalibrEQCritRR$(fit)$(fmt).svg",
+        title="Elapsed vs CPUTime (per iteration, select= elapse +-5% cputime )",
             attribs=())
 
 doPlot2Cols(anCalibr.data[linesF2,:],2,3,
             anCalibr.colLabels[2],anCalibr.colLabels[3],
-            outputDir * "/CalibrELAPSCritRR.svg",
+            outputDir * "/CalibrELAPSCritRR$(fit)$(fmt).svg",
+        title="Elapsed vs CPUTime (per iteration, select=total elapse >1.e6 ns)",
             attribs=())
 
 doPlot2Cols(anCalibr.data[linesF3,:],2,3,
             anCalibr.colLabels[2],anCalibr.colLabels[3],
-            outputDir * "/CalibrCPUCritRR.svg",
+            outputDir * "/CalibrCPUCritRR$(fit)$(fmt).svg",
+        title="Elapsed vs CPUTime (per iteration, select= total CPU time > 1.e6 ns)",
             attribs=())
 
 doPlot2Cols(anCalibr.data[linesF2,:],2,7,
             anCalibr.colLabels[2],anCalibr.colLabels[7],
             outputDir * "/CalibrELAPSCrit2.svg",
+            title="Elapsed (per iter) vs total Elapse , select= total elapse >1.e6 ns)",
             attribs=(Scale.y_log10,))    #use default for Scale.x_
 
 doPlot2Cols(anCalibr.data[linesF2,:],3,7,
             anCalibr.colLabels[3],anCalibr.colLabels[7],
             outputDir * "/CalibrELAPSCrit3.svg",
+        title="CPU time(per iter) vs total Elapse , select= totatl elapse > 1.e6 ns)",
             attribs=(Scale.y_log10,))    #use default for Scale.x_
     
 end # module MeasureMulAdd
